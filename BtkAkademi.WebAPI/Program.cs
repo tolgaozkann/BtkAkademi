@@ -1,3 +1,4 @@
+using BtkAkademi.Presentation;
 using BtkAkademi.Repositories.EFCore;
 using BtkAkademi.WebAPI.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers()
+    .AddApplicationPart(typeof(AssemblyRefference).Assembly)
     .AddNewtonsoftJson();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

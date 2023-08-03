@@ -1,13 +1,14 @@
-﻿using Azure;
-using BtkAkademi.Entities.Models;
-using BtkAkademi.Services;
+﻿using BtkAkademi.Entities.Models;
 using BtkAkademi.Services.Contracts;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace BtkAkademi.WebAPI.Controllers
+namespace BtkAkademi.Presentation.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -21,22 +22,25 @@ namespace BtkAkademi.WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllBooks() {
-            
+        public IActionResult GetAllBooks()
+        {
+
             try
             {
                 var books = _manager.BookService.GetAllBooks(false);
 
                 return Ok(books);
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 throw new Exception(ex.Message);
             }
-            
+
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetOneBook([FromRoute(Name ="id")]int id) { 
+        public IActionResult GetOneBook([FromRoute(Name = "id")] int id)
+        {
 
             try
             {
@@ -49,14 +53,14 @@ namespace BtkAkademi.WebAPI.Controllers
 
                 return Ok(book);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
         [HttpPost]
-        public IActionResult CreateOneBook([FromBody]Book book)
+        public IActionResult CreateOneBook([FromBody] Book book)
         {
             try
             {
@@ -66,15 +70,15 @@ namespace BtkAkademi.WebAPI.Controllers
                 _manager.BookService.CreateOneBook(book);
                 return StatusCode(201, book);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            
+
         }
 
         [HttpPut("{id:int}")]
-        public IActionResult UpdateOneBook([FromRoute(Name = "id" )]int id, [FromBody]Book book)
+        public IActionResult UpdateOneBook([FromRoute(Name = "id")] int id, [FromBody] Book book)
         {
             try
             {
@@ -86,18 +90,18 @@ namespace BtkAkademi.WebAPI.Controllers
                 return NoContent();//204
 
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteOneBook([FromRoute(Name = "id")] int id) 
+        public IActionResult DeleteOneBook([FromRoute(Name = "id")] int id)
         {
             try
             {
-                
+
                 _manager.BookService.DeleteOneBook(id, false);
                 return NoContent();
 
@@ -109,7 +113,7 @@ namespace BtkAkademi.WebAPI.Controllers
         }
 
         [HttpPatch("{id:int}")]
-        public IActionResult PartiallyUpdateOneBook([FromRoute(Name = "id")] int id, [FromBody]JsonPatchDocument<Book> bookPatch)
+        public IActionResult PartiallyUpdateOneBook([FromRoute(Name = "id")] int id, [FromBody] JsonPatchDocument<Book> bookPatch)
         {
 
             try

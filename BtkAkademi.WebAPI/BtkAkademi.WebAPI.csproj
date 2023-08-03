@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BtkAkademi.Presentation\BtkAkademi.Presentation.csproj" />
     <ProjectReference Include="..\BtkAkademi.Repositories\BtkAkademi.Repositories.csproj" />
     <ProjectReference Include="..\BtkAkademi.Services\BtkAkademi.Services.csproj" />
   </ItemGroup>
