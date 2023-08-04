@@ -1,4 +1,5 @@
-﻿using BtkAkademi.Repositories.Contracts;
+﻿using AutoMapper;
+using BtkAkademi.Repositories.Contracts;
 using BtkAkademi.Repositories.EFCore;
 using BtkAkademi.Services.Contracts;
 using System;
@@ -13,9 +14,9 @@ namespace BtkAkademi.Services
     {
         private readonly Lazy<IBookService> _bookService;
 
-        public ServiceManager(IRepositoryManager repositoryManager,ILoggerService loggerService)
+        public ServiceManager(IRepositoryManager repositoryManager,ILoggerService loggerService,IMapper mapper)
         {
-            _bookService = new Lazy<IBookService>(() => new BookManager(repositoryManager, loggerService));
+            _bookService = new Lazy<IBookService>(() => new BookManager(repositoryManager, loggerService,mapper));
         }
 
         public IBookService BookService => _bookService.Value;

@@ -2,6 +2,7 @@ using BtkAkademi.Presentation;
 using BtkAkademi.Repositories.EFCore;
 using BtkAkademi.Services.Contracts;
 using BtkAkademi.WebAPI.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 
@@ -11,9 +12,21 @@ var builder = WebApplication.CreateBuilder(args);
 LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
 // Add services to the container.
-builder.Services.AddControllers()
+builder.Services.AddControllers(config =>
+{
+    config.RespectBrowserAcceptHeader = true;
+    config.ReturnHttpNotAcceptable = true;
+})
+    .AddXmlDataContractSerializerFormatters()
     .AddApplicationPart(typeof(AssemblyRefference).Assembly)
     .AddNewtonsoftJson();
+
+//for the validations
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -26,6 +39,8 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 //inject logger service
 builder.Services.ConfigureLoggerServicer();
+//add aoutomapper
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 //logger service

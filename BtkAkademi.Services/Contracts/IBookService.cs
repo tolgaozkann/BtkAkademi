@@ -1,4 +1,5 @@
-﻿using BtkAkademi.Entities.Models;
+﻿using BtkAkademi.Entities.Dtos;
+using BtkAkademi.Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,13 @@ namespace BtkAkademi.Services.Contracts
 {
     public interface IBookService
     {
-        IEnumerable<Book> GetAllBooks(bool trackChanges);
-        Book GetOneBookById(int id, bool trackChanges);
-        Book CreateOneBook(Book book);
-        void UpdateOneBook(int id, Book book, bool trackChanges);
+        IEnumerable<BookDto> GetAllBooks(bool trackChanges);
+        BookDto GetOneBookById(int id, bool trackChanges);
+        BookDto CreateOneBook(InsertBookDto book);
+        void UpdateOneBook(int id, UpdateBookDto bookDto, bool trackChanges);
         void DeleteOneBook(int id, bool trackChanges);
+        (UpdateBookDto updateBookDto, Book book) GetOneBookForPatch(int id, bool trackChanges);
+
+        void SaveChangesForPatch(UpdateBookDto updateBookDto, Book book);
     }
 }
