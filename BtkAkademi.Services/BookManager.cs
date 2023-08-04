@@ -13,17 +13,16 @@ namespace BtkAkademi.Services
     public class BookManager : IBookService
     {
         private readonly IRepositoryManager _manager;
+        private readonly ILoggerService _logger;
 
-        public BookManager(IRepositoryManager manager)
+        public BookManager(IRepositoryManager manager, ILoggerService logger)
         {
             _manager = manager;
+            _logger = logger;
         }
 
         public Book CreateOneBook(Book book)
         {
-            if(book is null)
-                throw new ArgumentNullException(nameof(book));
-
             _manager.Book.Create(book);
             _manager.Save();
             return book;
@@ -35,7 +34,12 @@ namespace BtkAkademi.Services
             var entity = _manager.Book.GetOneBookById(id,trackChanges);
 
             if (entity is null)
-                throw new Exception($"Entity with this {id} could not found");
+            {
+                string message = $"Entity with this {id} could not found";
+                _logger.LogInfo(message);
+                throw new Exception(message);
+            }
+                
 
             _manager.Book.DeleteOneBook(entity);
             _manager.Save();
@@ -61,7 +65,13 @@ namespace BtkAkademi.Services
             var entity = _manager.Book.GetOneBookById(id, trackChanges);
 
             if (entity is null)
-                throw new Exception($"Entity with this {id} could not found");
+            {
+                string message = $"Entity with this {id} could not found";
+                _logger.LogInfo(message);
+                throw new Exception(message);
+            }
+                
+                
 
             entity.Title = book.Title;
             entity.Price = book.Price;

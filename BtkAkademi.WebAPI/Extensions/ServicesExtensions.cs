@@ -16,5 +16,7 @@ namespace BtkAkademi.WebAPI.Extensions
             services.AddScoped<IRepositoryManager,RepositoryManager>();
         public static void ConfigureServiceManager(this IServiceCollection services) => 
             services.AddScoped<IServiceManager,ServiceManager>();
+        public static void ConfigureLoggerServicer(this IServiceCollection services) =>
+            services.AddSingleton<ILoggerService, LoggerManager>();
     }
 }

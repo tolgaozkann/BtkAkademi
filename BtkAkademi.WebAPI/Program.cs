@@ -2,11 +2,14 @@ using BtkAkademi.Presentation;
 using BtkAkademi.Repositories.EFCore;
 using BtkAkademi.WebAPI.Extensions;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//add nlog configration on program
+LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
+// Add services to the container.
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(AssemblyRefference).Assembly)
     .AddNewtonsoftJson();
@@ -20,6 +23,8 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
 //add service manager injection via ServiceExtensions class
 builder.Services.ConfigureServiceManager();
+//inject logger service
+builder.Services.ConfigureLoggerServicer();
 
 var app = builder.Build();
 
