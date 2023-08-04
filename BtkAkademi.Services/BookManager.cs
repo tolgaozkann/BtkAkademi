@@ -1,12 +1,7 @@
-﻿using BtkAkademi.Entities.Models;
+﻿using BtkAkademi.Entities.Exceptions;
+using BtkAkademi.Entities.Models;
 using BtkAkademi.Repositories.Contracts;
-using BtkAkademi.Repositories.EFCore;
 using BtkAkademi.Services.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BtkAkademi.Services
 {
@@ -31,15 +26,11 @@ namespace BtkAkademi.Services
         public void DeleteOneBook(int id, bool trackChanges)
         {
             //check entity
-            var entity = _manager.Book.GetOneBookById(id,trackChanges);
+            var entity = _manager.Book.GetOneBookById(id, trackChanges);
 
             if (entity is null)
-            {
-                string message = $"Entity with this {id} could not found";
-                _logger.LogInfo(message);
-                throw new Exception(message);
-            }
-                
+                throw new BookNotFoundException(id);
+
 
             _manager.Book.DeleteOneBook(entity);
             _manager.Save();
@@ -52,26 +43,25 @@ namespace BtkAkademi.Services
 
         public Book GetOneBookById(int id, bool trackChanges)
         {
-            return _manager.Book.GetOneBookById(id,trackChanges);
+            var book = _manager.Book.GetOneBookById(id, trackChanges);
+
+            if (book is null)
+                throw new BookNotFoundException(id);
+
+            return book;
         }
 
         public void UpdateOneBook(int id, Book book, bool trackChanges)
         {
             //check params
-            if(book is null)
+            if (book is null)
                 throw new ArgumentNullException(nameof(book));
 
             //check entity
             var entity = _manager.Book.GetOneBookById(id, trackChanges);
 
             if (entity is null)
-            {
-                string message = $"Entity with this {id} could not found";
-                _logger.LogInfo(message);
-                throw new Exception(message);
-            }
-                
-                
+                throw new BookNotFoundException(id);
 
             entity.Title = book.Title;
             entity.Price = book.Price;

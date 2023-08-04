@@ -1,5 +1,6 @@
 using BtkAkademi.Presentation;
 using BtkAkademi.Repositories.EFCore;
+using BtkAkademi.Services.Contracts;
 using BtkAkademi.WebAPI.Extensions;
 using Microsoft.EntityFrameworkCore;
 using NLog;
@@ -27,12 +28,21 @@ builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureLoggerServicer();
 
 var app = builder.Build();
+//logger service
+var loggerService = app.Services.GetRequiredService<ILoggerService>();
+//Configure exception handler
+app.ConfigureExceptionHandler(loggerService);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+if (app.Environment.IsProduction())
+{
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
