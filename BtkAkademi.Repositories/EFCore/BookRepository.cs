@@ -1,6 +1,7 @@
 ﻿using BtkAkademi.Entities.Models;
 using BtkAkademi.Entities.RequestFeatures;
 using BtkAkademi.Repositories.Contracts;
+using BtkAkademi.Repositories.EFCore.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace BtkAkademi.Repositories.EFCore
@@ -13,7 +14,7 @@ namespace BtkAkademi.Repositories.EFCore
 
         public void CreateOneBook(Book book) =>
             Create(book);
-
+            
         public void DeleteOneBook(Book book) =>
             Delete(book);
 
@@ -21,6 +22,7 @@ namespace BtkAkademi.Repositories.EFCore
         {
             var books = await FindAll(trackChanges)
                 .FilterBooks(bookParameters.MinPrice, bookParameters.MaxPrice)
+                .Search(bookParameters.SearchTerm)
              .OrderBy(b => b.Id)
              .ToListAsync();
 

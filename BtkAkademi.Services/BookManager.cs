@@ -42,6 +42,7 @@ namespace BtkAkademi.Services
         {
             if (!bookParameters.ValidPriceRange)
                 throw new PriceOutOfRangeBadRequestException();
+
             var booksWithMetaData = await _manager.Book.GetAllBooksAsync(bookParameters,trackChanges);
 
             var booksDto = _mapper.Map<IEnumerable<BookDto>>(booksWithMetaData);
