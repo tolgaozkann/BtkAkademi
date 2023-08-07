@@ -1,9 +1,7 @@
 using BtkAkademi.Presentation;
-using BtkAkademi.Repositories.EFCore;
 using BtkAkademi.Services.Contracts;
 using BtkAkademi.WebAPI.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,6 +39,8 @@ builder.Services.ConfigureServiceManager();
 builder.Services.ConfigureLoggerServicer();
 //add aoutomapper
 builder.Services.AddAutoMapper(typeof(Program));
+//add action filters
+builder.Services.ConfigureActionFilters();
 
 var app = builder.Build();
 //logger service

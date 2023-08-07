@@ -1,4 +1,5 @@
 ﻿
+using BtkAkademi.Presentation.ActionFilters;
 using BtkAkademi.Repositories.Contracts;
 using BtkAkademi.Repositories.EFCore;
 using BtkAkademi.Services;
@@ -18,5 +19,10 @@ namespace BtkAkademi.WebAPI.Extensions
             services.AddScoped<IServiceManager,ServiceManager>();
         public static void ConfigureLoggerServicer(this IServiceCollection services) =>
             services.AddSingleton<ILoggerService, LoggerManager>();
+        public static void ConfigureActionFilters(this IServiceCollection services)
+        {
+            services.AddScoped<ValidationFilterAttribute>();
+            services.AddSingleton<LogFilterAttribute>();
+        }
     }
 }

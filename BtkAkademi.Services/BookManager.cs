@@ -20,73 +20,60 @@ namespace BtkAkademi.Services
             _mapper = mapper;
         }
 
-        public BookDto CreateOneBook(InsertBookDto book)
+        public async Task<BookDto> CreateOneBookAsync(InsertBookDto book)
         {
             var entity = _mapper.Map<Book>(book);
             _manager.Book.Create(entity);
-            _manager.Save();
+            await _manager.SaveAsync();
             return _mapper.Map<BookDto>(entity);
         }
 
-        public void DeleteOneBook(int id, bool trackChanges)
+        public async Task DeleteOneBookAsync(int id, bool trackChanges)
         {
             //check entity
-            var entity = _manager.Book.GetOneBookById(id, trackChanges);
-
-            if (entity is null)
-                throw new BookNotFoundException(id);
-
-
+            var entity = await GetByIdAndCheck(id, trackChanges);
+            //delete
             _manager.Book.DeleteOneBook(entity);
-            _manager.Save();
+            await _manager.SaveAsync();
         }
 
-        public IEnumerable<BookDto> GetAllBooks(bool trackChanges)
+        public async Task<IEnumerable<BookDto>> GetAllBooksAsync(bool trackChanges)
         {
-            var books = _manager.Book.GetAllBooks(trackChanges);
+            var books = await _manager.Book.GetAllBooksAsync(trackChanges);
 
             return _mapper.Map<IEnumerable<BookDto>>(books);
         }
 
-        public BookDto GetOneBookById(int id, bool trackChanges)
+        public async Task<BookDto> GetOneBookByIdAsync(int id, bool trackChanges)
         {
-            var book = _manager.Book.GetOneBookById(id, trackChanges);
-
-            if (book is null)
-                throw new BookNotFoundException(id);
+            var book = await GetByIdAndCheck(id, trackChanges);
 
             return _mapper.Map<BookDto>(book);
         }
 
-        public (UpdateBookDto updateBookDto, Book book) GetOneBookForPatch(int id, bool trackChanges)
+        public async Task<(UpdateBookDto updateBookDto, Book book)> GetOneBookForPatchAsync(int id, bool trackChanges)
         {
-            var book = _manager.Book.GetOneBookById(id, trackChanges);
-
-            if (book is null)
-                throw new BookNotFoundException(id);
+            var book = await GetByIdAndCheck(id, trackChanges);
 
             var updateBookDto = _mapper.Map<UpdateBookDto>(book);
 
             return (updateBookDto, book);
         }
 
-        public void SaveChangesForPatch(UpdateBookDto updateBookDto, Book book)
+        public async Task SaveChangesForPatchAsync(UpdateBookDto updateBookDto, Book book)
         {
             _mapper.Map(updateBookDto, book);
-            _manager.Save();
+            await _manager.SaveAsync();
         }
 
-        public void UpdateOneBook(int id, UpdateBookDto bookDto, bool trackChanges)
+        public async Task UpdateOneBookAsync(int id, UpdateBookDto bookDto, bool trackChanges)
         {
             //check params
             if (bookDto is null)
                 throw new ArgumentNullException(nameof(bookDto));
 
             //check entity
-            var entity = _manager.Book.GetOneBookById(id, trackChanges);
-
-            if (entity is null)
-                throw new BookNotFoundException(id);
+            var entity = await GetByIdAndCheck(id, trackChanges);
 
             //entity.Title = book.Title;
             //entity.Price = book.Price;
@@ -94,7 +81,17 @@ namespace BtkAkademi.Services
 
 
             _manager.Book.Update(entity);
-            _manager.Save();
+            await _manager.SaveAsync();
+        }
+
+        public async Task<Book> GetByIdAndCheck(int id, bool trackChanges)
+        {
+            var entity = await _manager.Book.GetOneBookByIdAsync(id, trackChanges);
+
+            if (entity is null)
+                throw new BookNotFoundException(id);
+
+            return entity;
         }
     }
 }
