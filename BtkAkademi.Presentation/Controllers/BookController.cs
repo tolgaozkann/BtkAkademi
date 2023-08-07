@@ -1,8 +1,10 @@
 ﻿using BtkAkademi.Entities.Dtos;
+using BtkAkademi.Entities.RequestFeatures;
 using BtkAkademi.Presentation.ActionFilters;
 using BtkAkademi.Services.Contracts;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace BtkAkademi.Presentation.Controllers
 {
@@ -19,11 +21,14 @@ namespace BtkAkademi.Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllBooks()
+        public async Task<IActionResult> GetAllBooks([FromQuery]BookParameters bookParameters)
         {
-            var books = await _manager.BookService.GetAllBooksAsync(false);
+            var pagedResult = await _manager.BookService.GetAllBooksAsync(bookParameters, false);
 
-            return Ok(books);
+            Response.Headers.Add("X-Pagination",
+                JsonSerializer.Serialize(pagedResult.Item2));
+
+            return Ok(pagedResult.Item1);
 
         }
 

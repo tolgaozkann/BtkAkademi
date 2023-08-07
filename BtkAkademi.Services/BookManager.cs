@@ -2,6 +2,7 @@
 using BtkAkademi.Entities.Dtos;
 using BtkAkademi.Entities.Exceptions;
 using BtkAkademi.Entities.Models;
+using BtkAkademi.Entities.RequestFeatures;
 using BtkAkademi.Repositories.Contracts;
 using BtkAkademi.Services.Contracts;
 
@@ -37,11 +38,13 @@ namespace BtkAkademi.Services
             await _manager.SaveAsync();
         }
 
-        public async Task<IEnumerable<BookDto>> GetAllBooksAsync(bool trackChanges)
+        public async Task<(IEnumerable<BookDto>, MetaData)> GetAllBooksAsync(BookParameters bookParameters, bool trackChanges)
         {
-            var books = await _manager.Book.GetAllBooksAsync(trackChanges);
+            var booksWithMetaData = await _manager.Book.GetAllBooksAsync(bookParameters,trackChanges);
 
-            return _mapper.Map<IEnumerable<BookDto>>(books);
+            var booksDto = _mapper.Map<IEnumerable<BookDto>>(booksWithMetaData);
+
+            return (booksDto, booksWithMetaData.MetaData);
         }
 
         public async Task<BookDto> GetOneBookByIdAsync(int id, bool trackChanges)

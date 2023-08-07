@@ -7,7 +7,7 @@ namespace BtkAkademi.Entities.Dtos
     {
         [Required(ErrorMessage ="This must be filled")]
         [MinLength(3,ErrorMessage = "This field must have at least 3 characters")]
-        [MaxLength(30, ErrorMessage = "This field must have at most 30 characters")]
+        [MaxLength(50, ErrorMessage = "This field must have at most 50 characters")]
         public string Title { get; init; }
 
         [Required(ErrorMessage = "This must be filled")]
