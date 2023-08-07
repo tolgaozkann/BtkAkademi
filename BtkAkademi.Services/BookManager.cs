@@ -40,6 +40,8 @@ namespace BtkAkademi.Services
 
         public async Task<(IEnumerable<BookDto>, MetaData)> GetAllBooksAsync(BookParameters bookParameters, bool trackChanges)
         {
+            if (!bookParameters.ValidPriceRange)
+                throw new PriceOutOfRangeBadRequestException();
             var booksWithMetaData = await _manager.Book.GetAllBooksAsync(bookParameters,trackChanges);
 
             var booksDto = _mapper.Map<IEnumerable<BookDto>>(booksWithMetaData);
