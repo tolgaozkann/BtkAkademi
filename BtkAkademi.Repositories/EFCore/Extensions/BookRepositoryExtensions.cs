@@ -1,4 +1,7 @@
 ﻿using BtkAkademi.Entities.Models;
+using System.Reflection;
+using System.Text;
+using System.Linq.Dynamic.Core;
 
 namespace BtkAkademi.Repositories.EFCore.Extensions
 {
@@ -10,7 +13,28 @@ namespace BtkAkademi.Repositories.EFCore.Extensions
 
         public static IQueryable<Book> Search(this IQueryable<Book> books, string searchTerm)
         {
-            return null;
+            if (string.IsNullOrWhiteSpace(searchTerm))
+                return books;
+
+            var lowerCaseTerm = searchTerm.Trim().ToLower();
+
+            return books
+                .Where(b => b.Title.ToLower()
+                .Contains(lowerCaseTerm));
+        }
+
+        public static IQueryable<Book> Sort(this IQueryable<Book> books, string orderByQueryString)
+        {
+            if (string.IsNullOrWhiteSpace(orderByQueryString))
+                return books.OrderBy(b => b.Id);
+
+            var orderQuery = OrderQueryBuilder
+                .CreateOrderQuery<Book>(orderByQueryString);
+
+            if (orderQuery is null)
+                return books.OrderBy(p => p.Id);
+
+            return books.OrderBy(orderQuery);
         }
     }
 }
