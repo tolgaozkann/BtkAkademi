@@ -43,6 +43,8 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureActionFilters();
 //configure Cors
 builder.Services.ConfigureCors();
+//configure data shaper
+builder.Services.ConfigureDataShaper();
 
 var app = builder.Build();
 //logger service

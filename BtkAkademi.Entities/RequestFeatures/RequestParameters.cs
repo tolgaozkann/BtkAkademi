@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace BtkAkademi.Entities.RequestFeatures
 {
@@ -20,6 +16,7 @@ namespace BtkAkademi.Entities.RequestFeatures
         }
 
         public string? OrderBy { get; set; }
+        public string? Fields { get; set; }
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿
+using BtkAkademi.Entities.Dtos;
 using BtkAkademi.Presentation.ActionFilters;
 using BtkAkademi.Repositories.Contracts;
 using BtkAkademi.Repositories.EFCore;
@@ -37,5 +38,8 @@ namespace BtkAkademi.WebAPI.Extensions
                 );
             });
         }
+
+        public static void ConfigureDataShaper(this IServiceCollection services) =>
+            services.AddScoped<IDataShaper<BookDto>, DataShaper<BookDto>>();
     }
 }
