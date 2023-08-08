@@ -5,6 +5,8 @@ using BtkAkademi.Repositories.Contracts;
 using BtkAkademi.Repositories.EFCore;
 using BtkAkademi.Services;
 using BtkAkademi.Services.Contracts;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 
 namespace BtkAkademi.WebAPI.Extensions
@@ -24,6 +26,7 @@ namespace BtkAkademi.WebAPI.Extensions
         {
             services.AddScoped<ValidationFilterAttribute>();
             services.AddSingleton<LogFilterAttribute>();
+            services.AddScoped<ValidateMediaTypesAttribute>();
         }
 
         public static void ConfigureCors(this IServiceCollection services)
@@ -41,5 +44,28 @@ namespace BtkAkademi.WebAPI.Extensions
 
         public static void ConfigureDataShaper(this IServiceCollection services) =>
             services.AddScoped<IDataShaper<BookDto>, DataShaper<BookDto>>();
+
+        public static void ConfigureCustomMediaTypes(this IServiceCollection services)
+        {
+            services.Configure<MvcOptions>(config =>
+            {
+                var systemTextJsonFormatter = config
+                .OutputFormatters
+                .OfType<SystemTextJsonOutputFormatter>()?.FirstOrDefault();
+
+                if (systemTextJsonFormatter is not null)
+                    systemTextJsonFormatter.SupportedMediaTypes
+                    .Add("application/vnd.btkakademi.heteoas+json");
+
+                var xmlOutputFormatter = config
+                .OutputFormatters
+                .OfType<XmlDataContractSerializerOutputFormatter>()?.FirstOrDefault();
+
+                if (xmlOutputFormatter is not null)
+                    xmlOutputFormatter.SupportedMediaTypes
+                    .Add("application/vnd.btkakademi.heteoas+xml");
+
+            });
+        }
     }
 }

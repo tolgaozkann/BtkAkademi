@@ -45,6 +45,9 @@ builder.Services.ConfigureActionFilters();
 builder.Services.ConfigureCors();
 //configure data shaper
 builder.Services.ConfigureDataShaper();
+//configure custom media types
+builder.Services.ConfigureCustomMediaTypes();
+
 
 var app = builder.Build();
 //logger service
