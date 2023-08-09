@@ -79,6 +79,10 @@ namespace BtkAkademi.Services
             await _manager.SaveAsync();
         }
 
+        public async Task<List<Book>> GetAllBooksAsync(bool trackChanges) => 
+           await _manager.Book.GetAllBooksAsync(trackChanges);
+        
+
         public async Task UpdateOneBookAsync(int id, UpdateBookDto bookDto, bool trackChanges)
         {
             //check params

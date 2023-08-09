@@ -17,8 +17,8 @@ builder.Services.AddControllers(config =>
     config.ReturnHttpNotAcceptable = true;
 })
     .AddXmlDataContractSerializerFormatters()
-    .AddApplicationPart(typeof(AssemblyRefference).Assembly);
-    //.AddNewtonsoftJson();
+    .AddApplicationPart(typeof(AssemblyRefference).Assembly)
+    .AddNewtonsoftJson();
 
 //for the validations
 builder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -42,6 +42,7 @@ builder.Services.ConfigureCors();
 builder.Services.ConfigureDataShaper();
 builder.Services.ConfigureCustomMediaTypes();
 builder.Services.AddScoped<IBookLinks, BookLinks>();
+builder.Services.ConfigureVersioning();
 
 
 var app = builder.Build();

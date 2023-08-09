@@ -18,6 +18,12 @@ namespace BtkAkademi.Repositories.EFCore
         public void DeleteOneBook(Book book) =>
             Delete(book);
 
+        public async Task<List<Book>> GetAllBooksAsync(bool trackChanges) => 
+            await FindAll(trackChanges)
+                .OrderBy(b=>b.Id)
+                .ToListAsync(); 
+        
+
         public async Task<PagedList<Book>> GetAllBooksAsync(BookParameters bookParameters, bool trackChanges)
         {
             var books = await FindAll(trackChanges)

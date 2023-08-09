@@ -8,8 +8,9 @@ using System.Text.Json;
 
 namespace BtkAkademi.Presentation.Controllers
 {
+    [ApiVersion("1.0")]
     [ServiceFilter(typeof(LogFilterAttribute))]
-    [Route("api/[controller]")]
+    [Route("api/{v:apiVersion}books")]
     [ApiController]
     public class BookController : ControllerBase
     {
@@ -87,7 +88,7 @@ namespace BtkAkademi.Presentation.Controllers
 
             var result = await _manager.BookService.GetOneBookForPatchAsync(id, false);
 
-            bookPatch.ApplyTo(result.updateBookDto, ModelState);
+            bookPatch.ApplyTo(result.updateBookDto);
 
             TryValidateModel(result.updateBookDto);
 
