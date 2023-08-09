@@ -50,7 +50,7 @@ namespace BtkAkademi.Presentation.Controllers
         }
 
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        [HttpPost]
+        [HttpPost(Name = "CreateOneBook")]
         public async Task<IActionResult> CreateOneBook([FromBody] InsertBookDto bookDto)
         {
             var book = await _manager.BookService.CreateOneBookAsync(bookDto);

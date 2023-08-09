@@ -17,9 +17,9 @@ namespace BtkAkademi.WebAPI.Extensions
             IConfiguration configuration) => services.AddDbContext<RepositoryContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("BtkDatabase")));
         public static void ConfigureRepositoryManager(this IServiceCollection services) =>
-            services.AddScoped<IRepositoryManager,RepositoryManager>();
-        public static void ConfigureServiceManager(this IServiceCollection services) => 
-            services.AddScoped<IServiceManager,ServiceManager>();
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
+        public static void ConfigureServiceManager(this IServiceCollection services) =>
+            services.AddScoped<IServiceManager, ServiceManager>();
         public static void ConfigureLoggerServicer(this IServiceCollection services) =>
             services.AddSingleton<ILoggerService, LoggerManager>();
         public static void ConfigureActionFilters(this IServiceCollection services)
@@ -54,16 +54,29 @@ namespace BtkAkademi.WebAPI.Extensions
                 .OfType<SystemTextJsonOutputFormatter>()?.FirstOrDefault();
 
                 if (systemTextJsonFormatter is not null)
+                {
                     systemTextJsonFormatter.SupportedMediaTypes
-                    .Add("application/vnd.btkakademi.hateoas+json");
+                        .Add("application/vnd.btkakademi.hateoas+json");
+                    systemTextJsonFormatter.SupportedMediaTypes
+                        .Add("application/vnd.btkakademi.apiroot+json");
+                }
+
+
+
 
                 var xmlOutputFormatter = config
                 .OutputFormatters
                 .OfType<XmlDataContractSerializerOutputFormatter>()?.FirstOrDefault();
 
                 if (xmlOutputFormatter is not null)
+                {
                     xmlOutputFormatter.SupportedMediaTypes
-                    .Add("application/vnd.btkakademi.hateoas+xml");
+                        .Add("application/vnd.btkakademi.hateoas+xml");
+                    xmlOutputFormatter.SupportedMediaTypes
+                        .Add("application/vnd.btkakademi.apiroot+xml");
+                }
+                    
+                
 
             });
         }
