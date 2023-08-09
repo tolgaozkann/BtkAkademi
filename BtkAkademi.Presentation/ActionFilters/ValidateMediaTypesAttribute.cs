@@ -19,10 +19,10 @@ namespace BtkAkademi.Presentation.ActionFilters
                 return;
             }
             var mediaType = context.HttpContext
-                .Response
+                .Request
                 .Headers["Accept"]
                 .FirstOrDefault();
-            if(MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue? outMediaType))
+            if(!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue? outMediaType))
             {
                 context.Result =
                     new BadRequestObjectResult($"Media type is not present. " +

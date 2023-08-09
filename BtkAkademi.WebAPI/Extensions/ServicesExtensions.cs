@@ -55,7 +55,7 @@ namespace BtkAkademi.WebAPI.Extensions
 
                 if (systemTextJsonFormatter is not null)
                     systemTextJsonFormatter.SupportedMediaTypes
-                    .Add("application/vnd.btkakademi.heteoas+json");
+                    .Add("application/vnd.btkakademi.hateoas+json");
 
                 var xmlOutputFormatter = config
                 .OutputFormatters
@@ -63,7 +63,7 @@ namespace BtkAkademi.WebAPI.Extensions
 
                 if (xmlOutputFormatter is not null)
                     xmlOutputFormatter.SupportedMediaTypes
-                    .Add("application/vnd.btkakademi.heteoas+xml");
+                    .Add("application/vnd.btkakademi.hateoas+xml");
 
             });
         }

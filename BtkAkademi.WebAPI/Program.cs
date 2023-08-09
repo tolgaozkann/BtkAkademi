@@ -1,4 +1,5 @@
 using BtkAkademi.Presentation;
+using BtkAkademi.Services;
 using BtkAkademi.Services.Contracts;
 using BtkAkademi.WebAPI.Extensions;
 using Microsoft.AspNetCore.Mvc;
@@ -16,8 +17,8 @@ builder.Services.AddControllers(config =>
     config.ReturnHttpNotAcceptable = true;
 })
     .AddXmlDataContractSerializerFormatters()
-    .AddApplicationPart(typeof(AssemblyRefference).Assembly)
-    .AddNewtonsoftJson();
+    .AddApplicationPart(typeof(AssemblyRefference).Assembly);
+    //.AddNewtonsoftJson();
 
 //for the validations
 builder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -31,22 +32,16 @@ builder.Services.AddSwaggerGen();
 
 //add database connection
 builder.Services.ConfigureSqlContext(builder.Configuration);
-//add repository managaer injection
+//Add Services
 builder.Services.ConfigureRepositoryManager();
-//add service manager injection via ServiceExtensions class
 builder.Services.ConfigureServiceManager();
-//inject logger service
 builder.Services.ConfigureLoggerServicer();
-//add aoutomapper
 builder.Services.AddAutoMapper(typeof(Program));
-//add action filters
 builder.Services.ConfigureActionFilters();
-//configure Cors
 builder.Services.ConfigureCors();
-//configure data shaper
 builder.Services.ConfigureDataShaper();
-//configure custom media types
 builder.Services.ConfigureCustomMediaTypes();
+builder.Services.AddScoped<IBookLinks, BookLinks>();
 
 
 var app = builder.Build();

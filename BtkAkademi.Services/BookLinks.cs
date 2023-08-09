@@ -36,21 +36,46 @@ namespace BtkAkademi.Services
 
             for(int index = 0; index < bookDtoList.Count(); index++)
             {
-                var bookLinks = CreateForBooks(httpContext, bookDtoList[index], fields);
+                var bookLinks = CreateForBook(httpContext, bookDtoList[index], fields);
                 shapedBooks[index].Add("Links", bookLinks);
             }
 
             var bookCollection = new LinkCollectionWrapper<Entity>(shapedBooks);
+            CreateForBooks(httpContext, bookCollection);
 
             return new LinkResponse() { HasLinks = true, LinkedEntities = bookCollection };
         }
 
-        private List<Link> CreateForBooks(HttpContext httpContext, BookDto bookDto, string fields)
+        private LinkCollectionWrapper<Entity> CreateForBooks(HttpContext httpContext,
+            LinkCollectionWrapper<Entity> bookCollectionWrapper)
+        {
+            bookCollectionWrapper.Links.Add(new Link
+            {
+                Href = $"/api/{httpContext.GetRouteData().Values["controller"].ToString().ToLower()}",
+                Rel = "self",
+                Method = "GET",
+            });
+
+            return bookCollectionWrapper;
+        }
+
+        private List<Link> CreateForBook(HttpContext httpContext, BookDto bookDto, string fields)
         {
             var links = new List<Link>()
             {
-                new Link("a1","b1","c1"),
-                new Link("a2","b2","c2")
+                new Link()
+                {
+                    Href = $"/api/{httpContext.GetRouteData().Values["controller"].ToString().ToLower()}" +
+                    $"/{bookDto.Id}",
+                    Rel = "self",
+                    Method = "GET"
+                },
+                new Link()
+                {
+                    Href = $"/api/{httpContext.GetRouteData().Values["controller"].ToString().ToLower()}",
+                    Rel = "create",
+                    Method = "POST"
+                },
             };
             return links;
         }
