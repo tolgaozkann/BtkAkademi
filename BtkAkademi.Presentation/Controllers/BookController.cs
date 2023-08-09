@@ -19,8 +19,10 @@ namespace BtkAkademi.Presentation.Controllers
         {
             _manager = manager;
         }
+
+        [HttpHead]
         [ServiceFilter(typeof(ValidateMediaTypesAttribute))]
-        [HttpGet]
+        [HttpGet(Name ="GetAllBooks")]
         public async Task<IActionResult> GetAllBooks([FromQuery]BookParameters bookParameters)
         {
 
@@ -96,6 +98,13 @@ namespace BtkAkademi.Presentation.Controllers
             await _manager.BookService.SaveChangesForPatchAsync(result.updateBookDto, result.book);
 
             return NoContent();//204
+        }
+
+        [HttpOptions]
+        public IActionResult GetBooksOptions()
+        {
+            Response.Headers.Add("Allow", "GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS");
+            return Ok();
         }
     }
 }
