@@ -1,4 +1,5 @@
 ﻿
+using AspNetCoreRateLimit;
 using BtkAkademi.Entities.Dtos;
 using BtkAkademi.Presentation.ActionFilters;
 using BtkAkademi.Repositories.Contracts;
@@ -101,7 +102,31 @@ namespace BtkAkademi.WebAPI.Extensions
         services.AddHttpCacheHeaders(expirationOpt =>
         {
             expirationOpt.MaxAge = 70;
-            expirationOpt.CacheLocation = CacheLocation.Private;
+            expirationOpt.CacheLocation = CacheLocation.Public;
         });
+
+        public static void ConfigureRateLimitOptions(this IServiceCollection services)
+        {
+            var rateLimitRules = new List<RateLimitRule>()
+            {
+                new RateLimitRule()
+                {
+                    Endpoint = "*",
+                    Limit = 3,
+                    Period = "1m"
+                }
+            };
+
+            services.Configure<IpRateLimitOptions>(opt =>
+            {
+                opt.GeneralRules = rateLimitRules;
+            });
+
+            services.AddSingleton<IRateLimitCounterStore,MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+            services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
+
+        }
     }
 }

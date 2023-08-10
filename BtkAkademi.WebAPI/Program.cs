@@ -1,3 +1,4 @@
+using AspNetCoreRateLimit;
 using BtkAkademi.Presentation;
 using BtkAkademi.Services;
 using BtkAkademi.Services.Contracts;
@@ -46,6 +47,9 @@ builder.Services.AddScoped<IBookLinks, BookLinks>();
 builder.Services.ConfigureVersioning();
 builder.Services.ConfigureResponseCaching();
 builder.Services.ConfigureHttpCacheHeaders();
+builder.Services.AddMemoryCache();
+builder.Services.ConfigureRateLimitOptions();
+builder.Services.AddHttpContextAccessor();
 
 
 var app = builder.Build();
@@ -68,6 +72,7 @@ if (app.Environment.IsProduction())
 
 app.UseHttpsRedirection();
 
+app.UseIpRateLimiting();
 app.UseCors("CorsPolicy");
 app.UseResponseCaching();
 app.UseHttpCacheHeaders();
