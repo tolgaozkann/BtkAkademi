@@ -1,12 +1,14 @@
 ﻿
 using AspNetCoreRateLimit;
 using BtkAkademi.Entities.Dtos;
+using BtkAkademi.Entities.Models;
 using BtkAkademi.Presentation.ActionFilters;
 using BtkAkademi.Repositories.Contracts;
 using BtkAkademi.Repositories.EFCore;
 using BtkAkademi.Services;
 using BtkAkademi.Services.Contracts;
 using Marvin.Cache.Headers;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -78,8 +80,8 @@ namespace BtkAkademi.WebAPI.Extensions
                     xmlOutputFormatter.SupportedMediaTypes
                         .Add("application/vnd.btkakademi.apiroot+xml");
                 }
-                    
-                
+
+
 
             });
         }
@@ -122,11 +124,27 @@ namespace BtkAkademi.WebAPI.Extensions
                 opt.GeneralRules = rateLimitRules;
             });
 
-            services.AddSingleton<IRateLimitCounterStore,MemoryCacheRateLimitCounterStore>();
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
             services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
             services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
             services.AddSingleton<IProcessingStrategy, AsyncKeyLockProcessingStrategy>();
 
+        }
+
+        public static void ConfigureIdentity(this IServiceCollection services)
+        {
+            var builder = services.AddIdentity<User, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
+
+                options.User.RequireUniqueEmail = true;
+            })
+                .AddEntityFrameworkStores<RepositoryContext>()
+                .AddDefaultTokenProviders();
         }
     }
 }

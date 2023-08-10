@@ -11,6 +11,7 @@ namespace BtkAkademi.WebAPI.Utilities
             CreateMap<UpdateBookDto,Book>().ReverseMap();
             CreateMap<Book, BookDto>();
             CreateMap<InsertBookDto, Book>();
+            CreateMap<UserRegisterDto, User>();
         }
     }
 }

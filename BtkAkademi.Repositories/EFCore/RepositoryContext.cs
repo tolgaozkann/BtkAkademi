@@ -1,15 +1,12 @@
-﻿using BtkAkademi.Entities.Models;
+﻿using System.Reflection;
+using BtkAkademi.Entities.Models;
 using BtkAkademi.Repositories.EFCore.Config;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BtkAkademi.Repositories.EFCore
 {
-    public class RepositoryContext : DbContext
+    public class RepositoryContext : IdentityDbContext<User>
     {
         public RepositoryContext(DbContextOptions options) : base(options)
         {
@@ -19,7 +16,11 @@ namespace BtkAkademi.Repositories.EFCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new BookConfig());
+            base.OnModelCreating(modelBuilder);
+            //modelBuilder.ApplyConfiguration(new BookConfig());
+
+            //IEntityTypeConfiguration üzerinden kalıtım alınan bütün config dosyalarının configrasyonunu tek satırda yapar.
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

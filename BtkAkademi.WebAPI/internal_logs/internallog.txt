@@ -161,3 +161,29 @@
 2023-08-10 10:34:32.9094 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\ozkan\source\repos\BtkAkademi\BtkAkademi.WebAPI\nlog.config
 2023-08-10 10:35:23.9328 Info AppDomain Shutting down. LogFactory closing...
 2023-08-10 10:35:23.9571 Info LogFactory has been closed.
+2023-08-10 11:15:46.4635 Info Message Template Auto Format enabled
+2023-08-10 11:15:46.6016 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 11:15:46.8372 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\ozkan\source\repos\BtkAkademi\BtkAkademi.WebAPI\nlog.config
+2023-08-10 11:15:49.1134 Info AppDomain Shutting down. LogFactory closing...
+2023-08-10 11:15:49.1311 Info LogFactory has been closed.
+2023-08-10 11:26:20.9346 Info Message Template Auto Format enabled
+2023-08-10 11:26:21.0481 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 11:26:21.0815 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\ozkan\source\repos\BtkAkademi\BtkAkademi.WebAPI\nlog.config
+2023-08-10 11:26:23.7547 Info AppDomain Shutting down. LogFactory closing...
+2023-08-10 11:26:23.7661 Info LogFactory has been closed.
+2023-08-10 11:38:14.8843 Info Message Template Auto Format enabled
+2023-08-10 11:38:14.9729 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 11:38:15.0010 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\ozkan\source\repos\BtkAkademi\BtkAkademi.WebAPI\nlog.config
+2023-08-10 11:38:17.0027 Info AppDomain Shutting down. LogFactory closing...
+2023-08-10 11:38:17.0151 Info LogFactory has been closed.
+2023-08-10 11:38:50.2397 Info Message Template Auto Format enabled
+2023-08-10 11:38:50.3384 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 11:38:50.3717 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\ozkan\source\repos\BtkAkademi\BtkAkademi.WebAPI\nlog.config
+2023-08-10 11:38:52.5458 Info AppDomain Shutting down. LogFactory closing...
+2023-08-10 11:38:52.5597 Info LogFactory has been closed.
+2023-08-10 12:24:12.5475 Info Message Template Auto Format enabled
+2023-08-10 12:24:12.7484 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 12:24:12.7956 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\ozkan\source\repos\BtkAkademi\BtkAkademi.WebAPI\nlog.config
+2023-08-10 12:26:02.7716 Info Message Template Auto Format enabled
+2023-08-10 12:26:02.9727 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 12:26:03.0075 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\ozkan\source\repos\BtkAkademi\BtkAkademi.WebAPI\nlog.config

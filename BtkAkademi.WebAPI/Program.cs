@@ -51,6 +51,10 @@ builder.Services.AddMemoryCache();
 builder.Services.ConfigureRateLimitOptions();
 builder.Services.AddHttpContextAccessor();
 
+//Identity Configurations
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
+
 
 var app = builder.Build();
 //logger service
@@ -77,6 +81,7 @@ app.UseCors("CorsPolicy");
 app.UseResponseCaching();
 app.UseHttpCacheHeaders();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
