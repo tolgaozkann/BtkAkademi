@@ -5,6 +5,7 @@ using BtkAkademi.Repositories.Contracts;
 using BtkAkademi.Repositories.EFCore;
 using BtkAkademi.Services;
 using BtkAkademi.Services.Contracts;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -92,5 +93,15 @@ namespace BtkAkademi.WebAPI.Extensions
                 opt.ApiVersionReader = new HeaderApiVersionReader("api-version");
             });
         }
+
+        public static void ConfigureResponseCaching(this IServiceCollection services) =>
+            services.AddResponseCaching();
+
+        public static void ConfigureHttpCacheHeaders(this IServiceCollection services) =>
+        services.AddHttpCacheHeaders(expirationOpt =>
+        {
+            expirationOpt.MaxAge = 70;
+            expirationOpt.CacheLocation = CacheLocation.Private;
+        });
     }
 }

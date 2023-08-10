@@ -10,8 +10,9 @@ namespace BtkAkademi.Presentation.Controllers
 {
     [ApiVersion("1.0")]
     [ServiceFilter(typeof(LogFilterAttribute))]
-    [Route("api/{v:apiVersion}books")]
+    [Route("api/[controller]")]
     [ApiController]
+    //[ResponseCache(CacheProfileName = "5mins")]
     public class BookController : ControllerBase
     {
         private readonly IServiceManager _manager;
@@ -24,6 +25,7 @@ namespace BtkAkademi.Presentation.Controllers
         [HttpHead]
         [ServiceFilter(typeof(ValidateMediaTypesAttribute))]
         [HttpGet(Name ="GetAllBooks")]
+        //[ResponseCache(Duration = 60)]
         public async Task<IActionResult> GetAllBooks([FromQuery]BookParameters bookParameters)
         {
 

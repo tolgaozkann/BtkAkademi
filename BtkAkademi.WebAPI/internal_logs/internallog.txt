@@ -138,3 +138,18 @@
 2023-08-09 16:25:19.5421 Info Message Template Auto Format enabled
 2023-08-09 16:25:19.7390 Info Registered target NLog.Targets.FileTarget(Name=logfile)
 2023-08-09 16:25:19.7856 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\ozkan\source\repos\BtkAkademi\BtkAkademi.WebAPI\nlog.config
+2023-08-10 09:22:09.2606 Info Message Template Auto Format enabled
+2023-08-10 09:22:09.5966 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 09:22:09.8421 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\ozkan\source\repos\BtkAkademi\BtkAkademi.WebAPI\nlog.config
+2023-08-10 09:31:33.5149 Info Message Template Auto Format enabled
+2023-08-10 09:31:33.7267 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 09:31:33.7798 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\ozkan\source\repos\BtkAkademi\BtkAkademi.WebAPI\nlog.config
+2023-08-10 09:32:55.7796 Info Message Template Auto Format enabled
+2023-08-10 09:32:56.0065 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 09:32:56.0494 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\ozkan\source\repos\BtkAkademi\BtkAkademi.WebAPI\nlog.config
+2023-08-10 09:33:57.4480 Info Message Template Auto Format enabled
+2023-08-10 09:33:57.6424 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 09:33:57.6830 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\ozkan\source\repos\BtkAkademi\BtkAkademi.WebAPI\nlog.config
+2023-08-10 09:58:46.4978 Info Message Template Auto Format enabled
+2023-08-10 09:58:46.7202 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-08-10 09:58:46.7744 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\ozkan\source\repos\BtkAkademi\BtkAkademi.WebAPI\nlog.config
