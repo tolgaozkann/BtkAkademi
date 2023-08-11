@@ -5,6 +5,7 @@ using BtkAkademi.Services.Contracts;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BtkAkademi.Presentation.Controllers
 {
@@ -22,6 +23,7 @@ namespace BtkAkademi.Presentation.Controllers
             _manager = manager;
         }
 
+        [Authorize]
         [HttpHead]
         [ServiceFilter(typeof(ValidateMediaTypesAttribute))]
         [HttpGet(Name ="GetAllBooks")]
@@ -46,12 +48,14 @@ namespace BtkAkademi.Presentation.Controllers
 
         }
 
+        [Authorize]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetOneBook([FromRoute(Name = "id")] int id)
         {
             return Ok(await _manager.BookService.GetOneBookByIdAsync(id, false));
         }
 
+        [Authorize(Roles = "Admin, Editor")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPost(Name = "CreateOneBook")]
         public async Task<IActionResult> CreateOneBook([FromBody] InsertBookDto bookDto)
@@ -60,6 +64,7 @@ namespace BtkAkademi.Presentation.Controllers
             return StatusCode(201, book);
         }
 
+        [Authorize(Roles = "Admin, Editor")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateOneBook([FromRoute(Name = "id")] int id, [FromBody] UpdateBookDto book)
@@ -75,6 +80,7 @@ namespace BtkAkademi.Presentation.Controllers
             return NoContent();//204
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteOneBook([FromRoute(Name = "id")] int id)
         {
@@ -82,6 +88,7 @@ namespace BtkAkademi.Presentation.Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Admin, Editor")]
         [HttpPatch("{id:int}")]
         public async Task<IActionResult> PartiallyUpdateOneBook([FromRoute(Name = "id")] int id, [FromBody] JsonPatchDocument<UpdateBookDto> bookPatch)
         {
@@ -103,6 +110,7 @@ namespace BtkAkademi.Presentation.Controllers
             return NoContent();//204
         }
 
+        [Authorize]
         [HttpOptions]
         public IActionResult GetBooksOptions()
         {

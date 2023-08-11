@@ -1,4 +1,5 @@
 ﻿
+using System.Text;
 using AspNetCoreRateLimit;
 using BtkAkademi.Entities.Dtos;
 using BtkAkademi.Entities.Models;
@@ -8,11 +9,13 @@ using BtkAkademi.Repositories.EFCore;
 using BtkAkademi.Services;
 using BtkAkademi.Services.Contracts;
 using Marvin.Cache.Headers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BtkAkademi.WebAPI.Extensions
 {
@@ -114,7 +117,7 @@ namespace BtkAkademi.WebAPI.Extensions
                 new RateLimitRule()
                 {
                     Endpoint = "*",
-                    Limit = 3,
+                    Limit = 15,
                     Period = "1m"
                 }
             };
@@ -145,6 +148,32 @@ namespace BtkAkademi.WebAPI.Extensions
             })
                 .AddEntityFrameworkStores<RepositoryContext>()
                 .AddDefaultTokenProviders();
+        }
+
+        public static void ConfigureJWT(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            var settings = configuration.GetSection("JwtSettings");
+            var secretKey = settings["secretKey"];
+
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = settings["validIssuer"],
+                    ValidAudience = settings["validAuidence"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                    
+                };
+            });
         }
     }
 }
