@@ -12,6 +12,9 @@ namespace BtkAkademi.WebAPI.Utilities
             CreateMap<Book, BookDto>();
             CreateMap<InsertBookDto, Book>();
             CreateMap<UserRegisterDto, User>();
+            CreateMap<UpdateCategoryDto,Category>().ReverseMap();
+            CreateMap<Category, CategoryDto>();
+            CreateMap<InsertCategoryDto, Category>();
         }
     }
 }

@@ -21,8 +21,17 @@ namespace BtkAkademi.Repositories.EFCore
         public async Task<List<Book>> GetAllBooksAsync(bool trackChanges) => 
             await FindAll(trackChanges)
                 .OrderBy(b=>b.Id)
-                .ToListAsync(); 
-        
+                .ToListAsync();
+
+        public async Task<IEnumerable<Book>> GetAllBooksWithDetailsAsync(bool trackChanges)
+        {
+            return await _context
+                .Books
+                .Include(b => b.Category)
+                .OrderBy(b=>b.Id)
+                .ToListAsync();
+        }
+
 
         public async Task<PagedList<Book>> GetAllBooksAsync(BookParameters bookParameters, bool trackChanges)
         {

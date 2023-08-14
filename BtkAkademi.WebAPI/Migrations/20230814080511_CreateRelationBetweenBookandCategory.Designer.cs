@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BtkAkademi.WebAPI.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20230810083816_AddRolesToDatabase")]
-    partial class AddRolesToDatabase
+    [Migration("20230814080511_CreateRelationBetweenBookandCategory")]
+    partial class CreateRelationBetweenBookandCategory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,6 +33,9 @@ namespace BtkAkademi.WebAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -42,26 +45,65 @@ namespace BtkAkademi.WebAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Books");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            CategoryId = 1,
                             Price = 334m,
                             Title = "İnsan Ne İle Yaşar"
                         },
                         new
                         {
                             Id = 2,
+                            CategoryId = 2,
                             Price = 34m,
                             Title = "Mai ve Siyah"
                         },
                         new
                         {
                             Id = 3,
+                            CategoryId = 1,
                             Price = 264m,
                             Title = "Yaban"
+                        });
+                });
+
+            modelBuilder.Entity("BtkAkademi.Entities.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryName = "Computer Science"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryName = "Database Management"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryName = "Network"
                         });
                 });
 
@@ -112,6 +154,12 @@ namespace BtkAkademi.WebAPI.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExpireTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -165,19 +213,19 @@ namespace BtkAkademi.WebAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9fabb4bf-aa25-4f6d-98d4-9690560ea03d",
+                            Id = "0f621c21-f834-4c03-a497-a2e14aa1452c",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "dbd0375a-9261-418e-8d41-63fb41e0cec1",
+                            Id = "87cf7d68-7ef6-430f-a958-9fcd0c2a961a",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
-                            Id = "e7fbcfe9-f388-407c-a7f2-0df11f1ebf11",
+                            Id = "0761250a-4fd6-4235-a11a-c38585ece9d4",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -289,6 +337,17 @@ namespace BtkAkademi.WebAPI.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("BtkAkademi.Entities.Models.Book", b =>
+                {
+                    b.HasOne("BtkAkademi.Entities.Models.Category", "Category")
+                        .WithMany("Books")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -338,6 +397,11 @@ namespace BtkAkademi.WebAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BtkAkademi.Entities.Models.Category", b =>
+                {
+                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }

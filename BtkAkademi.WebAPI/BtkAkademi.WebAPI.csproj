@@ -31,4 +31,8 @@
     <ProjectReference Include="..\BtkAkademi.Services\BtkAkademi.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Media\" />
+  </ItemGroup>
+
 </Project>

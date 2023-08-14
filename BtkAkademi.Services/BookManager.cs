@@ -28,6 +28,10 @@ namespace BtkAkademi.Services
 
         public async Task<BookDto> CreateOneBookAsync(InsertBookDto book)
         {
+            var category = await _manager.Category.GetOneCategoryByCategoryId(book.CategoryId, false);
+
+            if (category is null)
+                throw new CategoryNotFoundException(book.CategoryId);
             var entity = _mapper.Map<Book>(book);
             _manager.Book.Create(entity);
             await _manager.SaveAsync();
@@ -81,7 +85,14 @@ namespace BtkAkademi.Services
 
         public async Task<List<Book>> GetAllBooksAsync(bool trackChanges) => 
            await _manager.Book.GetAllBooksAsync(trackChanges);
-        
+
+        public async Task<IEnumerable<Book>> GetAllBooksWithDetailsAsync(bool trackChanges)
+        {
+            return await _manager
+                .Book
+                .GetAllBooksWithDetailsAsync(trackChanges);
+        }
+
 
         public async Task UpdateOneBookAsync(int id, UpdateBookDto bookDto, bool trackChanges)
         {

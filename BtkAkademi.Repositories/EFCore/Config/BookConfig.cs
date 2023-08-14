@@ -14,9 +14,9 @@ namespace BtkAkademi.Repositories.EFCore.Config
         public void Configure(EntityTypeBuilder<Book> builder)
         {
             builder.HasData(
-                new Book { Id = 1, Title = "İnsan Ne İle Yaşar" , Price = 334},
-                new Book { Id = 2, Title = "Mai ve Siyah" , Price = 34},
-                new Book { Id = 3, Title = "Yaban" , Price = 264}
+                new Book { Id = 1, CategoryId = 1, Title = "İnsan Ne İle Yaşar" , Price = 334},
+                new Book { Id = 2, CategoryId = 2, Title = "Mai ve Siyah" , Price = 34},
+                new Book { Id = 3, CategoryId = 1, Title = "Yaban" , Price = 264}
                 );
         }
     }

@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using BtkAkademi.Entities.Models;
-using BtkAkademi.Repositories.EFCore.Config;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +12,7 @@ namespace BtkAkademi.Repositories.EFCore
         }
 
         public DbSet<Book> Books { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

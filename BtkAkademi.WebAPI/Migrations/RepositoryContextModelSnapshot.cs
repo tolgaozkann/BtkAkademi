@@ -30,6 +30,9 @@ namespace BtkAkademi.WebAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -39,26 +42,65 @@ namespace BtkAkademi.WebAPI.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Books");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            CategoryId = 1,
                             Price = 334m,
                             Title = "İnsan Ne İle Yaşar"
                         },
                         new
                         {
                             Id = 2,
+                            CategoryId = 2,
                             Price = 34m,
                             Title = "Mai ve Siyah"
                         },
                         new
                         {
                             Id = 3,
+                            CategoryId = 1,
                             Price = 264m,
                             Title = "Yaban"
+                        });
+                });
+
+            modelBuilder.Entity("BtkAkademi.Entities.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryName = "Computer Science"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryName = "Database Management"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryName = "Network"
                         });
                 });
 
@@ -168,19 +210,19 @@ namespace BtkAkademi.WebAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2a4cf219-b375-4283-a622-ee550eb8e339",
+                            Id = "0f621c21-f834-4c03-a497-a2e14aa1452c",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "5ec83e99-bbe1-4c80-8f36-bcd7867e1836",
+                            Id = "87cf7d68-7ef6-430f-a958-9fcd0c2a961a",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
-                            Id = "85693b34-54c9-4f61-897d-a8390ccc7614",
+                            Id = "0761250a-4fd6-4235-a11a-c38585ece9d4",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -292,6 +334,17 @@ namespace BtkAkademi.WebAPI.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("BtkAkademi.Entities.Models.Book", b =>
+                {
+                    b.HasOne("BtkAkademi.Entities.Models.Category", "Category")
+                        .WithMany("Books")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -341,6 +394,11 @@ namespace BtkAkademi.WebAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("BtkAkademi.Entities.Models.Category", b =>
+                {
+                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }

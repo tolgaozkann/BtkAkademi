@@ -18,5 +18,7 @@ namespace BtkAkademi.Services.Contracts
         Task SaveChangesForPatchAsync(UpdateBookDto updateBookDto, Book book);
 
         Task<List<Book>> GetAllBooksAsync(bool trackChanges);
+
+        Task<IEnumerable<Book>> GetAllBooksWithDetailsAsync(bool trackChanges);
     }
 }

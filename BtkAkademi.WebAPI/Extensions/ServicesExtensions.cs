@@ -118,7 +118,7 @@ namespace BtkAkademi.WebAPI.Extensions
                 new RateLimitRule()
                 {
                     Endpoint = "*",
-                    Limit = 15,
+                    Limit = 150,
                     Period = "1m"
                 }
             };
@@ -149,7 +149,6 @@ namespace BtkAkademi.WebAPI.Extensions
             })
                 .AddEntityFrameworkStores<RepositoryContext>()
                 .AddDefaultTokenProviders();
-            
         }
 
         public static void ConfigureJWT(this IServiceCollection services,
@@ -225,6 +224,19 @@ namespace BtkAkademi.WebAPI.Extensions
             });
 
             
+        }
+
+        public static void RegisterRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<IBookRepository, BookRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+        }
+
+        public static void RegisterServices(this IServiceCollection services)
+        {
+            services.AddScoped<IBookService, BookManager>();
+            services.AddScoped<ICategoryService, CategoryManager>();
+            services.AddScoped<IAuthenticationService, AuthenticationManager>();
         }
     }
 }

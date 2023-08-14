@@ -56,6 +56,15 @@ namespace BtkAkademi.Presentation.Controllers
             return Ok(await _manager.BookService.GetOneBookByIdAsync(id, false));
         }
 
+        [Authorize]
+        [HttpGet("details")]
+        public async Task<IActionResult> GetAllBooksWithDetailsAsync()
+        {
+            return Ok(await _manager
+                .BookService
+                .GetAllBooksWithDetailsAsync(false));
+        }
+
         [Authorize(Roles = "Admin, Editor")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPost(Name = "CreateOneBook")]

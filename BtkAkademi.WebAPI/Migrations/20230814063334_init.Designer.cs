@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BtkAkademi.WebAPI.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20230811081025_AddRefreshTokenFields")]
-    partial class AddRefreshTokenFields
+    [Migration("20230814063334_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,6 +62,40 @@ namespace BtkAkademi.WebAPI.Migrations
                             Id = 3,
                             Price = 264m,
                             Title = "Yaban"
+                        });
+                });
+
+            modelBuilder.Entity("BtkAkademi.Entities.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryName = "Computer Science"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryName = "Database Management"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryName = "Network"
                         });
                 });
 
@@ -171,19 +205,19 @@ namespace BtkAkademi.WebAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "2a4cf219-b375-4283-a622-ee550eb8e339",
+                            Id = "3250bcfe-c02a-45c9-9749-7c57763a75fb",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "5ec83e99-bbe1-4c80-8f36-bcd7867e1836",
+                            Id = "78791491-5b91-4591-8033-ea6df6e0bbbe",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
-                            Id = "85693b34-54c9-4f61-897d-a8390ccc7614",
+                            Id = "39c5dda9-a8d5-42b2-94dd-f63cd688922f",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

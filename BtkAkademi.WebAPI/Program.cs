@@ -23,7 +23,7 @@ builder.Services.AddControllers(config =>
     .AddApplicationPart(typeof(AssemblyRefference).Assembly)
     .AddNewtonsoftJson(opt =>
     {
-        //opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     });
 
 //for the validations
@@ -40,7 +40,9 @@ builder.Services.ConfigureSwagger();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 //Add Services
 builder.Services.ConfigureRepositoryManager();
+builder.Services.RegisterRepositories();
 builder.Services.ConfigureServiceManager();
+builder.Services.RegisterServices();
 builder.Services.ConfigureLoggerServicer();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureActionFilters();

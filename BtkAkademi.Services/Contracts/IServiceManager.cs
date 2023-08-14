@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace BtkAkademi.Services.Contracts
 {
@@ -10,5 +6,6 @@ namespace BtkAkademi.Services.Contracts
     {
         public IBookService BookService { get; }
         public IAuthenticationService AuthenticationService { get; }
+        public ICategoryService CategoryService { get; }
     }
 }
