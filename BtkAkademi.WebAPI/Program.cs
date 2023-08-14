@@ -4,6 +4,7 @@ using BtkAkademi.Services;
 using BtkAkademi.Services.Contracts;
 using BtkAkademi.WebAPI.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,14 +14,17 @@ LogManager.LoadConfiguration(String.Concat(Directory.GetCurrentDirectory(), "/nl
 
 // Add services to the container.
 builder.Services.AddControllers(config =>
-{
-    config.RespectBrowserAcceptHeader = true;
-    config.ReturnHttpNotAcceptable = true;
-    config.CacheProfiles.Add("5mins", new CacheProfile() { Duration = 300 });
-})
+    {
+        config.RespectBrowserAcceptHeader = true;
+        config.ReturnHttpNotAcceptable = true;
+        config.CacheProfiles.Add("5mins", new CacheProfile() {Duration = 300});
+    })
     .AddXmlDataContractSerializerFormatters()
     .AddApplicationPart(typeof(AssemblyRefference).Assembly)
-    .AddNewtonsoftJson();
+    .AddNewtonsoftJson(opt =>
+    {
+        //opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+    });
 
 //for the validations
 builder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -30,7 +34,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.ConfigureSwagger();
 
 //add database connection
 builder.Services.ConfigureSqlContext(builder.Configuration);
@@ -67,7 +71,11 @@ app.ConfigureExceptionHandler(loggerService);
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(s =>
+    {
+        s.SwaggerEndpoint("/swagger/v1/swagger.json" , "Btk Akademi V1");
+        s.SwaggerEndpoint("/swagger/v2/swagger.json" , "Btk Akademi V2");
+    });
 }
 
 if (app.Environment.IsProduction())

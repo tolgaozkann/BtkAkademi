@@ -7,6 +7,7 @@ namespace BtkAkademi.Presentation.Controllers;
 
 [ApiController]
 [Route("api/Authentication")]
+[ApiExplorerSettings(GroupName = "v1")]
 public class AuthenticationController : ControllerBase
 {
     private readonly IServiceManager _service;
@@ -42,9 +43,20 @@ public class AuthenticationController : ControllerBase
         if (!await _service.AuthenticationService.ValidateUser(userAuthenticationDto))
             return Unauthorized(); //401
 
-        return Ok(new
-        {
-            Token = await _service.AuthenticationService.CreateToken()
-        });
+        var tokenDto = await _service
+            .AuthenticationService
+            .CreateToken(populateExp:true);
+
+        return Ok(tokenDto);
+    }
+
+    [HttpPost("refresh")]
+    [ServiceFilter(typeof(ValidationFilterAttribute))]
+    public async Task<IActionResult> Refresh([FromBody] TokenDto tokenDto)
+    {
+        var newTokenDto = await _service
+            .AuthenticationService
+            .RefreshToken(tokenDto);
+        return Ok(newTokenDto);
     }
 }

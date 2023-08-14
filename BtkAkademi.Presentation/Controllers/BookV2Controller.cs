@@ -6,6 +6,7 @@ namespace BtkAkademi.Presentation.Controllers;
 [ApiVersion("2.0",Deprecated = true)]
 [ApiController]
 [Route("api/Book")]
+[ApiExplorerSettings(GroupName = "v2")]
 public class BookV2Controller : ControllerBase
 {
     private readonly IServiceManager _serviceManager;
